@@ -4,6 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dosage_title">Search</string>
     <string name="fav_dosage_title">Favorite</string>
+    <string name="details_dosage_title">Dosage</string>
+    <string name="add_dosage_title">Add Dosage</string>
     <string name="no_title">No Title</string>
     <string name="btn_add">icone add</string>
 </resources>
