@@ -8,4 +8,5 @@
     <string name="add_dosage_title">Add Dosage</string>
     <string name="no_title">No Title</string>
     <string name="btn_add">icone add</string>
+    <string name="search_hint">Search...</string>
 </resources>
