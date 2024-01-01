@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">VetApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dosage_title">Search</string>
+    <string name="fav_dosage_title">Favorite</string>
+    <string name="no_title">No Title</string>
+    <string name="btn_add">icone add</string>
+</resources>
