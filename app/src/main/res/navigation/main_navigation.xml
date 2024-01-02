@@ -25,13 +25,21 @@
         tools:layout="@layout/fragment_fav_dosage" >
         <action
             android:id="@+id/action_favDosageFragment_to_detailsDosageFragment"
-            app:destination="@id/detailsDosageFragment" />
+            app:destination="@id/detailsDosageFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/detailsDosageFragment"
         android:name="com.mirodeon.vetapp.fragment.DetailsDosageFragment"
         android:label="fragment_details_dosage"
-        tools:layout="@layout/fragment_details_dosage" />
+        tools:layout="@layout/fragment_details_dosage" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
     <fragment
         android:id="@+id/addDosageFragment"
         android:name="com.mirodeon.vetapp.fragment.AddDosageFragment"
@@ -39,6 +47,10 @@
         tools:layout="@layout/fragment_add_dosage" >
         <action
             android:id="@+id/action_addDosageFragment_to_detailsDosageFragment"
-            app:destination="@id/detailsDosageFragment" />
+            app:destination="@id/detailsDosageFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

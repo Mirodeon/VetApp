@@ -3,26 +3,30 @@ package com.mirodeon.vetapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mirodeon.vetapp.application.MyApp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.mirodeon.vetapp.room.entity.DosageWithMethod
+import com.mirodeon.vetapp.room.entity.Method
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 
 class DosageViewModel : ViewModel() {
 
-    //private val dosageDao = MyApp.instance.database.dosageDao()
+    private val dosageDao = MyApp.instance.database.dosageDao()
 
-    //fun fullDosage(): Flow<List<DosageWithMethod>> = dosageDao.getAll()
+    fun allDosage(): Flow<List<DosageWithMethod>> = dosageDao.getAllDosage()
 
-    //fun fullMethod(): Flow<List<Method>> = methodDao.getAll()
+    fun allMethod(): List<Method> = dosageDao.getAllMethod()
 
-    //fun fullDosageByFav(isFav: Boolean): Flow<List<DosageWithMethod>> = dosageDao.getByFav(isFav)
+    fun allDosageByFav(isFav: Boolean): Flow<List<DosageWithMethod>> = dosageDao.getByFav(isFav)
 
-    //fun setDosageFav(id: Long, isFav: Boolean) = dosageDao.isFav(id, isFav)
+    fun dosageById(id: Long): Flow<DosageWithMethod> = dosageDao.getDosageById(id)
 
-    //fun insertDosageWithMethod(dosage: DosageWithMethod) = dosageDao.insert(dosage)
+    fun setDosageFav(id: Long, isFav: Boolean) = dosageDao.setFav(id, isFav)
+
+    fun insertDosage(dosage: DosageWithMethod) = dosageDao.insertAllDosage(dosage).first()
+
+    fun deleteDosage(dosage: DosageWithMethod) = dosageDao.deleteAllDosage(dosage)
+
+    fun updateDosage(dosage: DosageWithMethod) = dosageDao.updateDosageWithMethod(dosage)
+
 }
 
 class DosageViewModelFactory() : ViewModelProvider.Factory {
