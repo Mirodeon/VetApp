@@ -13,6 +13,8 @@ class DosageViewModel : ViewModel() {
 
     fun allDosage(): Flow<List<DosageWithMethod>> = dosageDao.getAllDosage()
 
+    fun searchDosage(search: String): Flow<List<DosageWithMethod>> = dosageDao.getDosageBySearch(search)
+
     fun allMethod(): List<Method> = dosageDao.getAllMethod()
 
     fun allDosageByFav(isFav: Boolean): Flow<List<DosageWithMethod>> = dosageDao.getByFav(isFav)

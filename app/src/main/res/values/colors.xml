@@ -5,4 +5,5 @@
     <color name="transparent">#00000000</color>
     <color name="opacity50black">#80000000</color>
     <color name="opacity50white">#80FFFFFF</color>
+    <color name="red">#FFCF2317</color>
 </resources>

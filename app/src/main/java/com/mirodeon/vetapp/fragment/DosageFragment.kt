@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mirodeon.vetapp.R
 import com.mirodeon.vetapp.databinding.FragmentDosageBinding
+import com.mirodeon.vetapp.room.entity.DosageWithMethod
 import com.mirodeon.vetapp.viewmodel.DosageViewModel
 import com.mirodeon.vetapp.viewmodel.DosageViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.launch
 
 class DosageFragment : Fragment() {
@@ -25,6 +28,7 @@ class DosageFragment : Fragment() {
     private val viewModel: DosageViewModel by activityViewModels {
         DosageViewModelFactory()
     }
+    private var jobSearch: Job? = null
     private var jobDosage: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,12 +45,22 @@ class DosageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.emptySearch?.root?.visibility = View.GONE
         /*setupRecyclerView()*/
+        setInputSearch()
+        setAfterTextChanged()
     }
 
     override fun onResume() {
         super.onResume()
-        /*viewModel.onRefresh()*/
+        jobSearch?.cancel()
+        launchDosage()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        jobSearch?.cancel()
+        jobDosage?.cancel()
     }
 
     override fun onDestroy() {
@@ -54,21 +68,67 @@ class DosageFragment : Fragment() {
         binding = null
     }
 
-    /*private fun toggleFav(item: DosageWithMethod) {
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.setDosageFav(id = item.dosage.dosageId, isFav = !item.dosage.isFav)
+    private fun launchDosage() {
+        jobDosage?.cancel()
+        binding?.loader?.root?.visibility = View.VISIBLE
+        val input = binding?.searchEditText?.text?.toString()
+        jobDosage = if (input.isNullOrEmpty()) {
+            lifecycle.coroutineScope.launch {
+                delay(5000)
+                viewModel.allDosage().cancellable().collect { updateContent(it) }
+            }
+        } else {
+            lifecycle.coroutineScope.launch {
+                delay(700)
+                viewModel.searchDosage(input).cancellable().collect { updateContent(it) }
+            }
         }
-    }*/
+    }
+
+    private fun updateContent(dosages: List<DosageWithMethod>) {
+        if (dosages.isEmpty()) {
+            binding?.emptySearch?.root?.visibility = View.VISIBLE
+        } else {
+            binding?.emptySearch?.root?.visibility = View.GONE
+        }
+        //adapter.submitList(dosages)
+        binding?.loader?.root?.visibility = View.GONE
+    }
+
+    private fun setInputSearch() {
+        binding?.searchInputLayout?.setEndIconOnClickListener {
+            jobSearch?.cancel()
+            launchDosage()
+        }
+        binding?.searchEditText?.onSubmit {
+            jobSearch?.cancel()
+            launchDosage()
+        }
+    }
+
+    private fun setAfterTextChanged() {
+        binding?.searchEditText?.doAfterTextChanged {
+            jobSearch?.cancel()
+            jobSearch = lifecycle.coroutineScope.launch {
+                delay(2000)
+                launchDosage()
+            }
+        }
+    }
+
+    private fun EditText.onSubmit(handler: () -> Unit) {
+        setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                handler()
+            }
+            true
+        }
+    }
 
     /*private fun setupRecyclerView() {
         recyclerView = binding?.containerRecycler
         recyclerView?.layoutManager = LinearLayoutManager(activity)
-        val itemAdapter = DosageAdapter { toggleFav(it) }
-        recyclerView?.adapter = itemAdapter
-        jobWaifu = lifecycle.coroutineScope.launch {
-            viewModel.fullDosage().collect { dosages ->
-                itemAdapter.submitList(dosages)
-            }
-        }
+        adapter = DosageAdapter()
+        recyclerView?.adapter = adapter
     }*/
 }

@@ -16,10 +16,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DosageDao {
     @Transaction
-    @Query("SELECT * FROM dosage")
+    @Query("SELECT * FROM dosage ORDER BY name ASC")
     fun getAllDosage(): Flow<List<DosageWithMethod>>
 
-    @Query("SELECT * FROM method")
+    @Transaction
+    @Query("SELECT * FROM dosage WHERE name LIKE '%' || :search ORDER BY name ASC")
+    fun getDosageBySearch(search: String): Flow<List<DosageWithMethod>>
+
+    @Query("SELECT * FROM method ORDER BY name ASC")
     fun getAllMethod(): List<Method>
 
     @Query("SELECT COUNT(*) FROM method")
@@ -30,7 +34,7 @@ interface DosageDao {
     fun getDosageById(id: Long): Flow<DosageWithMethod>
 
     @Transaction
-    @Query("SELECT * FROM dosage WHERE isFav = :isFav")
+    @Query("SELECT * FROM dosage WHERE isFav = :isFav ORDER BY name ASC")
     fun getByFav(isFav: Boolean): Flow<List<DosageWithMethod>>
 
     @Query("UPDATE dosage SET isFav=:isFav WHERE dosageId = :id")

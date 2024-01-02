@@ -9,4 +9,6 @@
     <string name="no_title">No Title</string>
     <string name="btn_add">icone add</string>
     <string name="search_hint">Search...</string>
+    <string name="nothing_to_display">Sorry, there\'s nothing to display.</string>
+    <string name="dissatisfied_icon">Dissatisfied Icon</string>
 </resources>

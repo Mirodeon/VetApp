@@ -8,6 +8,9 @@ import com.mirodeon.vetapp.room.dao.DosageDao
 import com.mirodeon.vetapp.room.entity.Dosage
 import com.mirodeon.vetapp.room.entity.DosageMethodCrossRef
 import com.mirodeon.vetapp.room.entity.Method
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 @Database(entities = [Dosage::class, Method::class, DosageMethodCrossRef::class], version = 1)
 abstract class DosageDatabase : RoomDatabase() {
@@ -15,16 +18,18 @@ abstract class DosageDatabase : RoomDatabase() {
     abstract fun dosageDao(): DosageDao
 
     fun initializeMethods() {
-        if(dosageDao().getCountMethod() <= 0){
-            dosageDao().insertMethod(
-                Method(name = "injection intramusculaire"),
-                Method(name = "injection intraveineuse"),
-                Method(name = "injection sous-cutanée"),
-                Method(name = "voie orale"),
-                Method(name = "voie intramammaire"),
-                Method(name = "voie topique"),
-                Method(name = "voie intra-utérine")
-            )
+        CoroutineScope(IO).launch {
+            if (dosageDao().getCountMethod() <= 0) {
+                dosageDao().insertMethod(
+                    Method(name = "injection intramusculaire"),
+                    Method(name = "injection intraveineuse"),
+                    Method(name = "injection sous-cutanée"),
+                    Method(name = "voie orale"),
+                    Method(name = "voie intramammaire"),
+                    Method(name = "voie topique"),
+                    Method(name = "voie intra-utérine")
+                )
+            }
         }
     }
 
@@ -40,9 +45,9 @@ abstract class DosageDatabase : RoomDatabase() {
                     "MyApp.db"
                 ).build()
 
-                INSTANCE = instance
-
                 instance.initializeMethods()
+
+                INSTANCE = instance
 
                 instance
             }
