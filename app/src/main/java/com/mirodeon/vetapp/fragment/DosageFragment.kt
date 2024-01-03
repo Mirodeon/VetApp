@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mirodeon.vetapp.adapter.DosageAdapter
 import com.mirodeon.vetapp.databinding.FragmentDosageBinding
 import com.mirodeon.vetapp.room.entity.DosageWithMethod
 import com.mirodeon.vetapp.viewmodel.DosageViewModel
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 class DosageFragment : Fragment() {
     private var binding: FragmentDosageBinding? = null
     private var recyclerView: RecyclerView? = null
-    /*private var adapter: DosageAdapter? = null*/
+    private var adapter: DosageAdapter? = null
     private val viewModel: DosageViewModel by activityViewModels {
         DosageViewModelFactory()
     }
@@ -46,7 +47,7 @@ class DosageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.emptySearch?.root?.visibility = View.GONE
-        /*setupRecyclerView()*/
+        setupRecyclerView()
         setInputSearch()
         setAfterTextChanged()
     }
@@ -88,10 +89,12 @@ class DosageFragment : Fragment() {
     private fun updateContent(dosages: List<DosageWithMethod>) {
         if (dosages.isEmpty()) {
             binding?.emptySearch?.root?.visibility = View.VISIBLE
+            binding?.containerRecycler?.visibility = View.GONE
         } else {
             binding?.emptySearch?.root?.visibility = View.GONE
+            binding?.containerRecycler?.visibility = View.VISIBLE
         }
-        //adapter.submitList(dosages)
+        adapter?.submitList(dosages)
         binding?.loader?.root?.visibility = View.GONE
     }
 
@@ -125,10 +128,10 @@ class DosageFragment : Fragment() {
         }
     }
 
-    /*private fun setupRecyclerView() {
+    private fun setupRecyclerView() {
         recyclerView = binding?.containerRecycler
         recyclerView?.layoutManager = LinearLayoutManager(activity)
         adapter = DosageAdapter()
         recyclerView?.adapter = adapter
-    }*/
+    }
 }
