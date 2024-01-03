@@ -20,7 +20,7 @@ interface DosageDao {
     fun getAllDosage(): Flow<List<DosageWithMethod>>
 
     @Transaction
-    @Query("SELECT * FROM dosage WHERE name LIKE '%' || :search ORDER BY name ASC")
+    @Query("SELECT * FROM dosage WHERE name LIKE :search || '%' ORDER BY name ASC")
     fun getDosageBySearch(search: String): Flow<List<DosageWithMethod>>
 
     @Query("SELECT * FROM method ORDER BY name ASC")

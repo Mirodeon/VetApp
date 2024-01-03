@@ -11,4 +11,6 @@
     <string name="search_hint">Search...</string>
     <string name="nothing_to_display">Sorry, there\'s nothing to display.</string>
     <string name="dissatisfied_icon">Dissatisfied Icon</string>
+    <string name="no_content">No content</string>
+    <string name="button_fav">Button Fav</string>
 </resources>
