@@ -10,6 +10,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mirodeon.vetapp.adapter.DosageAdapter
@@ -17,6 +18,8 @@ import com.mirodeon.vetapp.databinding.FragmentDosageBinding
 import com.mirodeon.vetapp.room.entity.DosageWithMethod
 import com.mirodeon.vetapp.viewmodel.DosageViewModel
 import com.mirodeon.vetapp.viewmodel.DosageViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.cancellable
@@ -128,7 +131,22 @@ class DosageFragment : Fragment() {
     private fun setupRecyclerView() {
         recyclerView = binding?.containerRecycler
         recyclerView?.layoutManager = LinearLayoutManager(activity)
-        adapter = DosageAdapter()
+        adapter = DosageAdapter(
+            { toggleFav(it) },
+            { goToDetails(it) }
+        )
         recyclerView?.adapter = adapter
+    }
+
+    private fun toggleFav(item: DosageWithMethod) {
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.setDosageFav(id = item.dosage.dosageId, isFav = !item.dosage.isFav)
+        }
+    }
+
+    private fun goToDetails(item: DosageWithMethod) {
+        val directions =
+            DosageFragmentDirections.actionDosageFragmentToDetailsDosageFragment(item.dosage.dosageId)
+        findNavController().navigate(directions)
     }
 }

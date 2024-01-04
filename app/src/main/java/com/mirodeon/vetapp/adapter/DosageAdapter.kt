@@ -12,7 +12,10 @@ import com.mirodeon.vetapp.application.MyApp
 import com.mirodeon.vetapp.databinding.CellDosageBinding
 import com.mirodeon.vetapp.room.entity.DosageWithMethod
 
-class DosageAdapter() :
+class DosageAdapter(
+    private val onFavClicked: (item: DosageWithMethod) -> Unit,
+    private val onItemClicked: (item: DosageWithMethod) -> Unit
+) :
     ListAdapter<DosageWithMethod, DosageAdapter.DosageViewHolder>(DiffCallback) {
 
     companion object {
@@ -34,28 +37,30 @@ class DosageAdapter() :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DosageViewHolder {
-        /*viewHolder.itemView.setOnClickListener {
-            val position = viewHolder.adapterPosition
-            onItemClicked(getItem(position))
-        }*/
-        return DosageViewHolder(
+        val viewHolder = DosageViewHolder(
             CellDosageBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
+
+        viewHolder.itemView.setOnClickListener {
+            val position = viewHolder.adapterPosition
+            onItemClicked(getItem(position))
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: DosageViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onFavClicked)
     }
 
     class DosageViewHolder(
         private var binding: CellDosageBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(dosage: DosageWithMethod) {
+        fun bind(dosage: DosageWithMethod, onFavClicked: (item: DosageWithMethod) -> Unit) {
             binding.txtName.text = dosage.dosage.name
             binding.btnFav.imageTintList =
                 ColorStateList.valueOf(
@@ -71,7 +76,7 @@ class DosageAdapter() :
                         )
                 )
             binding.btnFav.setOnClickListener {
-
+                onFavClicked(dosage)
             }
         }
     }
