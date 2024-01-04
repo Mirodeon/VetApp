@@ -10,7 +10,7 @@ import com.mirodeon.vetapp.activity.main.utils.NavigationManager
 import com.mirodeon.vetapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private var binding: ActivityMainBinding? = null
+    var binding: ActivityMainBinding? = null
     private lateinit var navigationManager: NavigationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {

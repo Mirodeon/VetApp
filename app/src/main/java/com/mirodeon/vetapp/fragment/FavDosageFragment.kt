@@ -65,7 +65,7 @@ class FavDosageFragment : Fragment() {
         jobDosage?.cancel()
         binding?.loader?.root?.visibility = View.VISIBLE
         jobDosage = lifecycle.coroutineScope.launch {
-            delay(5000)
+            //delay(700)
             viewModel.allDosageByFav(true).cancellable().collect { updateContent(it) }
         }
     }
