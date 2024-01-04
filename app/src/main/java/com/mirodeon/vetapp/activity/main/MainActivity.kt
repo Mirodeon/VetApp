@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.addDosageFragment to getString(R.string.add_dosage_title)
             ),
             binding?.toolbarMenu?.btnActionBar,
+            binding?.toolbarMenu?.btnSave,
             getString(R.string.no_title)
         )
     }

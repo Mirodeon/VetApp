@@ -13,4 +13,19 @@
     <string name="dissatisfied_icon">Dissatisfied Icon</string>
     <string name="no_content">No content</string>
     <string name="button_fav">Button Fav</string>
+    <string name="btn_save">Button save</string>
+    <string name="name_hint">Name...</string>
+    <string name="name_title_add">Name *</string>
+    <string name="concentration_title_add">Concentration (mg/ml) *</string>
+    <string name="concentration_hint">Concentration...</string>
+    <string name="ingredient_title_add">Active ingredient (mg/kg) *</string>
+    <string name="ingredient_hint">Active ingredient...</string>
+    <string name="number_of_doses_title_add">Number of doses</string>
+    <string name="number_of_doses_hint">Number of doses...</string>
+    <string name="interval_title_add">Interval (in hours)</string>
+    <string name="interval_hint">Interval...</string>
+    <string name="withdrawal_hint">Withdrawal period...</string>
+    <string name="withdrawal_title_add">Withdrawal period (in days)</string>
+    <string name="method_title_add">Route of administration</string>
+    <string name="add_method_btn">Select</string>
 </resources>

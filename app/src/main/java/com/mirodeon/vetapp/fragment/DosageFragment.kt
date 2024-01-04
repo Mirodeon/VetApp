@@ -73,14 +73,11 @@ class DosageFragment : Fragment() {
         jobDosage?.cancel()
         binding?.loader?.root?.visibility = View.VISIBLE
         val input = binding?.searchEditText?.text?.toString()
-        jobDosage = if (input.isNullOrEmpty()) {
-            lifecycle.coroutineScope.launch {
-                delay(5000)
+        jobDosage = lifecycle.coroutineScope.launch {
+            delay(700)
+            if (input.isNullOrEmpty()) {
                 viewModel.allDosage().cancellable().collect { updateContent(it) }
-            }
-        } else {
-            lifecycle.coroutineScope.launch {
-                delay(700)
+            } else {
                 viewModel.searchDosage(input).cancellable().collect { updateContent(it) }
             }
         }

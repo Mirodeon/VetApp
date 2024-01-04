@@ -21,6 +21,7 @@ class NavigationManager(
     titleView: TextView?,
     fragments: Map<Int, String>,
     addButton: View?,
+    saveButton: View?,
     noTitle: String
 ) {
     val navController: NavController
@@ -28,7 +29,7 @@ class NavigationManager(
     init {
         navController = activity.findNavController(navGraphId)
         setNavigation(activity, toolbar, topLvlIds, bottomBar)
-        changeOnDestination(fragments, titleView, toolbar, noTitle)
+        changeOnDestination(fragments, titleView, toolbar, noTitle, addId, addButton, saveButton)
         setNavigationToolBar(addButton, addId)
     }
 
@@ -56,7 +57,10 @@ class NavigationManager(
         fragments: Map<Int, String>,
         titleView: TextView?,
         toolbar: Toolbar?,
-        noTitle: String
+        noTitle: String,
+        addId: Int,
+        addButton: View?,
+        saveButton: View?
     ) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
@@ -65,6 +69,15 @@ class NavigationManager(
                 if (destination.id == fragment.key) {
                     titleView?.text = fragment.value
                     toolbar?.visibility = View.VISIBLE
+
+                    if (destination.id == addId) {
+                        addButton?.visibility = View.GONE
+                        saveButton?.visibility = View.VISIBLE
+                    } else {
+                        addButton?.visibility = View.VISIBLE
+                        saveButton?.visibility = View.GONE
+                    }
+
                     destinationFound = true
                 }
                 destinationFound
